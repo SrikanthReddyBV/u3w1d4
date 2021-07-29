@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Youtube</title>
+    <style>
+      #navbar {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        position: fixed;
+        top: 0;
+        background-color: white;
+      }
+
+      #navbar > div {
+        min-height: 30px;
+        min-width: 150px;
+        /* border: black solid 2px; */
+      }
+      #navbar > div > img {
+        height: 70px;
+        width: 150px;
+      }
+      #search {
+        width: 800px;
+        padding: 25px 100px;
+      }
+
+      #search > input {
+        width: 75%;
+        height: 25px;
+      }
+      #search button {
+        height: 31px;
+      }
+      #main_container {
+        margin-top: 80px;
+        min-height: 1000px;
+        /* border: solid black 2px; */
+        padding: 50px;
+      }
+
+      #popular {
+        display: grid;
+        grid-gap: 20px;
+        grid-template-columns: repeat(4, 22%);
+        margin-left: 10%;
+      }
+
+      #popular > div {
+        max-width: 300px;
+        max-height: 150px;
+        margin: 10px;
+        /* border: black solid 2px; */
+      }
+      #popular > div > iframe {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar">
+      <div>
+        <img
+          src="https://www.theindianwire.com/wp-content/uploads/2017/08/youtube_logo_new_official_1504077880072.jpg"
+        />
+      </div>
+      <div id="search">
+        <input type="text" id="query" />
+        <span><button onclick="getData()">Search</button></span>
+      </div>
+      <div></div>
+    </div>
+
+    <div id="main_container">
+      <div id="popular">
+        <!-- <div>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/FzGi0d1y3rg"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/FzGi0d1y3rg"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/FzGi0d1y3rg"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/FzGi0d1y3rg"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        <div>
+          <iframe
+            width="560"
+            height="315"
+            src="https://www.youtube.com/embed/FzGi0d1y3rg"
+            title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div> -->
+      </div>
+    </div>
+  </body>
+</html>
+
+<script>
+  let popular = document.getElementById("popular");
+  async function getData() {
+    popular.innerHTML = null;
+    let q = document.getElementById("query").value;
+    let res = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/search?q=${q}&key=AIzaSyAXtbGLynY_L4A5FWUx6cY6859BjMvVYeM&maxResults=20`
+    );
+    let data = await res.json();
+    let { items } = data;
+
+    items.filter((el) => {
+      return el.id.videoId != undefined;
+    });
+
+    items.forEach(({ id: { videoId } }) => {
+      console.log(videoId);
+      console.log(data);
+
+      let div = document.createElement("div");
+      div.innerHTML = `<iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/${videoId}"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>`;
+
+      popular.appendChild(div);
+    });
+  }
+
+  async function trending() {
+    let q = "popular in india";
+    let res = await fetch(
+      `https://youtube.googleapis.com/youtube/v3/search?q=${q}&key=AIzaSyAXtbGLynY_L4A5FWUx6cY6859BjMvVYeM&maxResults=20`
+    );
+    let data = await res.json();
+    let { items } = data;
+
+    items.filter((el) => {
+      return el.id.videoId != undefined;
+    });
+
+    items.forEach(({ id: { videoId } }) => {
+      console.log(videoId);
+      console.log(data);
+
+      let div = document.createElement("div");
+      div.innerHTML = `<iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/${videoId}"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>`;
+
+      popular.appendChild(div);
+    });
+  }
+
+  trending();
+</script>
